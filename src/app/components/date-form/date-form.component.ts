@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormControl} from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { DateTransferService } from '../../date-transfer.service';
 
 @Component({
   selector: 'app-date-form',
@@ -7,21 +7,12 @@ import {FormGroup, FormControl} from '@angular/forms';
   styleUrls: ['./date-form.component.css']
 })
 export class DateFormComponent implements OnInit {
+  @Input() DocNumber: number;
 
-  myForm: FormGroup;
-  constructor() {
-    this.myForm = new FormGroup({
+  constructor(private observ: DateTransferService) {
 
-      date_from: new FormControl(),
-      date_till: new FormControl(),
-    });
   }
-
-  submit() {
-    console.log(this.myForm);
-  }
-
   ngOnInit() {
+      this.observ.subscribe(num => console.log('observer 1: ' + num));
   }
-
 }
