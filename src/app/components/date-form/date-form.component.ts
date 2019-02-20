@@ -1,5 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DateTransferService } from '../../date-transfer.service';
+import { Subscription } from 'rxjs';
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-date-form',
@@ -7,12 +10,22 @@ import { DateTransferService } from '../../date-transfer.service';
   styleUrls: ['./date-form.component.css']
 })
 export class DateFormComponent implements OnInit {
-  @Input() DocNumber: number;
-
-  constructor(private observ: DateTransferService) {
-
+    docNumber: any;
+    input: any;
+    today = new Date();
+    subscription: Subscription;
+  constructor(private dateService: DateTransferService) {
+      this.subscription = this.dateService.getDate().subscribe((from) => {
+        this.input = from;
+        this.docNumber = moment(this.input).format('DD') + moment(this.input).format('MM') + this.today.getFullYear();
+          console.log('day' + moment(this.input).format('DD'));
+          console.log('month' + moment(this.input).format('MM'));
+          console.log(this.today.getFullYear());
+      });
   }
   ngOnInit() {
-      this.observ.subscribe(num => console.log('observer 1: ' + num));
+      console.log('day' + moment(this.input).format('DD'));
+      console.log('month' + moment(this.input).format('MM'));
+      console.log(this.today.getFullYear());
   }
 }
