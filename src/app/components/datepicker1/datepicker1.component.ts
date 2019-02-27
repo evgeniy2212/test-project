@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl} from '@angular/forms';
-import { DateTransferService } from '../../date-transfer.service';
 
 import * as moment from 'moment';
+import {DateTransferService} from '../../date-transfer.service';
 
 @Component({
   selector: 'app-datepicker1',
@@ -19,14 +19,10 @@ export class Datepicker1Component implements OnInit {
   }
 
   ngOnInit() {
-      this.dateService.fromDate(moment(this.date).format('DD-MM-YYYY'));
+    this.myForm.valueChanges
+        .subscribe((data) => {
+            this.dateService.setDay(Number(moment(data).format('DD')));
+            console.log(data);
+        });
   }
-
-  fromDate(date) {
-    this.dateService.fromDate(moment(date.value).format('DD-MM-YYYY'));
-    // console.log('day' + moment(date.value).format('DD'));
-    // console.log('month' + moment(date.value).format('MM'));
-    // console.log(this.date.getFullYear());
-  }
-
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 
 import * as moment from 'moment';
+import {DateTransferService} from '../../date-transfer.service';
 
 @Component({
   selector: 'app-datepicker3',
@@ -9,19 +10,20 @@ import * as moment from 'moment';
   styleUrls: ['./datepicker3.component.css']
 })
 export class Datepicker3Component implements OnInit {
-
   myForm: FormGroup;
-  constructor() {
+  date = new Date();
+  constructor(private dateService: DateTransferService) {
     this.myForm = new FormGroup({
-      date_start: new FormControl(moment().format('l')),
+      date_start: new FormControl(),
     });
   }
 
   ngOnInit() {
+    this.dateService.tillDate(moment(this.date).format('DD-MM-YYYY'));
   }
 
-  change(dataEvent) {
-    console.log(this.myForm.value);
+  tillDate(date) {
+    this.dateService.tillDate(moment(date.value).format('DD-MM-YYYY'));
   }
 
 }
