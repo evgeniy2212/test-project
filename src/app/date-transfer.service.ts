@@ -1,29 +1,37 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import { combineLatest, Observable, Subject} from 'rxjs';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DateTransferService {
-  subject = new Subject();
-  date = new Date().getDate();
-  day: BehaviorSubject<number> = new BehaviorSubject(this.date);
-  month: BehaviorSubject<number> = new BehaviorSubject(this.date);
-  setDay(day: number) {
-    this.subject.next(day);
-  }
-  getDay(): number {
-    return this.day.getValue();
-  }
-  fromDate(from: any) {
-    this.subject.next({ date: from });
+  days = new Subject();
+  months = new Subject();
+  beforeDay: Date = new Date();
+  beforeMonth: Date = new Date();
+  day: string;
+  month: string;
+
+  setDay(day: Date) {
+    console.log(moment(this.beforeDay).format('DD-MM-YYYY'));
+    if (moment(day).isBefore(this.beforeMonth)) {
+      this.beforeDay = day;
+      this.day = moment(day).format('DD')
+      this.days.next(this.day);
+    }
   }
 
-  tillDate(to: any) {
-    this.subject.next({ date: to });
+  setMonth(month: Date) {
+    console.log(moment(this.beforeMonth).format('DD-MM-YYYY'));
+    if (moment(month).isAfter(this.beforeDay)) {
+      this.beforeMonth = month;
+      this.month = moment(month).format('MM')
+      this.months.next(this.month);
+    }
   }
 
   getDate(): Observable<any> {
-    return this.subject.asObservable();
+    return combineLatest(this.days, this.months);
   }
 }

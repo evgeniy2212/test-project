@@ -11,31 +11,14 @@ import * as moment from 'moment';
 })
 export class DateFormComponent implements OnInit {
     docNumber: any;
-    input: any;
-    today = new Date();
     subscription: Subscription;
   constructor(private dateService: DateTransferService) {
       this.subscription = this.dateService.getDate().subscribe((from) => {
-        // this.input = from;
-        // this.docNumber = (moment(this.input).format('DD') + moment(from).format('MM') + this.today.getFullYear());
-        //   console.log('day' + moment(this.input).format('DD'));
-        //   console.log('month' + moment(this.input).format('MM'));
-        //   console.log(this.today.getFullYear());
-      // this.dateService.day.subscribe((from => this.docNumber = from));
-          console.log(from);
-          this.docNumber = from;
+          this.docNumber = from.join('') + moment().format('YYYY');
       });
+      dateService.days.next(moment().format('DD'));
+      dateService.months.next(moment().format('MM'));
   }
   ngOnInit() {
-      // this.subscription = this.dateService.getDate().subscribe((from) => {
-          // console.log(from);
-          // this.input = from;
-          // this.docNumber = (moment(this.input).format('DD') + moment(from).format('MM') + this.today.getFullYear());
-          // console.log('day' + moment(this.input).format('DD'));
-          // console.log('month' + moment(this.input).format('MM'));
-          // console.log(this.today.getFullYear());
-          // // this.dateService.day.subscribe((from => this.docNumber = from));
-      // });
-      // this.dateService.day.subscribe((from => this.docNumber = from));
   }
 }
